@@ -1,117 +1,170 @@
-# Specs — Biblioteca de Especificações Técnicas
+# Specs — Technical Specification Library
 
-Repositório de especificações de implementação prontas para uso com agentes de IA (Claude Code, Cursor, Copilot, etc.) e desenvolvedores. Cada spec é um documento técnico completo que descreve **como construir** uma funcionalidade do zero — decisões arquiteturais, configurações, modelos, fluxos e checklists incluídos.
-
----
-
-## Objetivo
-
-Acelerar o desenvolvimento de projetos eliminando o tempo gasto em pesquisa e tomada de decisão repetitiva. Em vez de começar do zero toda vez que precisar de autenticação, pagamentos ou internacionalização, você abre a spec correspondente e executa — seja você ou um agente de IA.
-
-**Princípios:**
-- Specs são genéricas: não são atadas a nenhum projeto específico
-- Uma IA deve conseguir ler a spec e implementar o sistema do zero
-- Cada documento cobre decisões arquiteturais, código, configuração e checklist final
+A repository of implementation-ready specifications for use with AI agents (Claude Code, Cursor, Copilot, etc.) and developers. Each spec is a complete technical document describing **how to build** a feature from scratch — architectural decisions, configurations, models, flows, and checklists included.
 
 ---
 
+## Objective
 
-## Specs Planejadas
+Accelerate project development by eliminating time spent on research and repetitive decision-making. Instead of starting from scratch every time you need authentication, payments, or internationalization, you open the corresponding spec and execute — whether you are a human developer or an AI agent.
+
+**Principles:**
+- Specs are generic: not tied to any specific project.
+- An AI should be able to read the spec and implement the system from scratch.
+- Each document covers architectural decisions, code, configuration, and a final checklist.
+
+---
+
+## Available Specs
+
+### Core Agent Architecture
+
+| Spec | What it covers |
+|------|---------------|
+| [spec-multiagent-pipeline.md](spec-multiagent-pipeline.md) | 5-agent sequential pipeline: Router → Scope Guard → Generator → Assessor → Refiner. Includes orchestration, per-agent model overrides, and quality thresholds. |
+| [spec-agent-observability.md](spec-agent-observability.md) | Execution tracing, timeline events, and structured metadata for every pipeline run. Enables debugging UIs and structured logging. |
+
+### Data & Memory
+
+| Spec | What it covers |
+|------|---------------|
+| [spec-database-memory-rag.md](spec-database-memory-rag.md) | Hybrid memory with Redis (fast, ephemeral) + PostgreSQL (durable). pgvector for semantic RAG. Includes schema, chunking, incremental embeddings, and graceful degradation. |
+
+### LLM & Configuration
+
+| Spec | What it covers |
+|------|---------------|
+| [spec-multi-provider-llm.md](spec-multi-provider-llm.md) | Unified LLM client for Ollama, OpenAI, Claude, and Gemini. Provider abstraction, model resolution priority, and runtime key updates without restart. |
+| [spec-declarative-behavior-config.md](spec-declarative-behavior-config.md) | YAML-driven domain/behavior configuration. Externalizes system prompts, guardrails, pedagogy rules, and scope keywords into data files — no code changes for new domains. |
+| [spec-runtime-config-api.md](spec-runtime-config-api.md) | REST endpoints for runtime configuration: set API keys, assign models per agent, view memory stats. Enables A/B testing and zero-restart ops changes. |
+
+### Fullstack Implementation (Django)
+
+| Spec | What it covers |
+|------|---------------|
+| [spec-django-internationalization.md](spec-django-internationalization.md) | Complete guide for multi-language support: session/cookie strategy, i18n_patterns, translation files (.po/.mo), and UI language selectors. |
+| [spec-django-cart-payments.md](spec-django-cart-payments.md) | Generic shopping cart and payment system: Order/OrderItem snapshoting, manual (Pix) and gateway payments, and transaction idempotency. |
+
+### Infrastructure
+
+| Spec | What it covers |
+|------|---------------|
+| [spec-fullstack-docker-network.md](spec-fullstack-docker-network.md) | Docker Compose topology for FastAPI backend + Next.js frontend + PostgreSQL + Redis + Ollama. Internal DNS, CORS, healthchecks, and production considerations. |
+
+---
+
+## Recommended Reading Order
+
+For a new AI application from scratch:
+
+1. [spec-multiagent-pipeline.md](spec-multiagent-pipeline.md) — understand the agent pattern first
+2. [spec-multi-provider-llm.md](spec-multi-provider-llm.md) — wire the LLM layer
+3. [spec-database-memory-rag.md](spec-database-memory-rag.md) — add memory and RAG
+4. [spec-declarative-behavior-config.md](spec-declarative-behavior-config.md) — externalize behavior
+5. [spec-fullstack-docker-network.md](spec-fullstack-docker-network.md) — containerize
+6. [spec-runtime-config-api.md](spec-runtime-config-api.md) — add operator controls
+7. [spec-agent-observability.md](spec-agent-observability.md) — add tracing
+
+---
+
+## Roadmap / Planned Specs
 
 ### Django
-
-- **Autenticação & Autorização** — registro, login social (OAuth), 2FA, controle de permissões por grupo
-- **Multi-tenancy** — isolamento de dados por organização com subdomínio ou schema separado no PostgreSQL
-- **API REST com DRF** — versionamento, autenticação JWT, throttling, documentação com drf-spectacular
-- **Upload de Arquivos** — imagens, documentos, armazenamento em S3/R2, processamento assíncrono com Celery
-- **Notificações em Tempo Real** — Django Channels, WebSocket, notificações push via Firebase
-- **Sistema de Assinatura (SaaS)** — planos, trial, cobrança recorrente via Stripe, portal do cliente
-- **Auditoria & Logs de Atividade** — rastreamento de ações do usuário, Django Admin aprimorado
-- **Background Jobs com Celery** — filas, retry, beat para tarefas agendadas, monitoramento com Flower
+- **Authentication & Authorization** — registration, social login (OAuth), 2FA, group-based permissions.
+- **Multi-tenancy** — data isolation per organization with subdomains or separate schemas in PostgreSQL.
+- **REST API with DRF** — versioning, JWT auth, throttling, documentation with drf-spectacular.
+- **File Uploads** — images, documents, S3/R2 storage, async processing with Celery.
+- **Real-time Notifications** — Django Channels, WebSockets, Firebase push notifications.
+- **SaaS Subscription System** — plans, trials, recurring billing via Stripe, customer portal.
+- **Audit & Activity Logs** — user action tracking, enhanced Django Admin.
+- **Background Jobs with Celery** — queues, retries, beat for scheduled tasks, Flower monitoring.
 
 ### Next.js
+- **Authentication with NextAuth.js** — social providers, sessions, route protection, middleware.
+- **SSR / SSG / ISR** — when to use each strategy, caching, revalidation, and fallback.
+- **App Router with Server Components** — nested layouts, streaming, suspense boundaries.
+- **Forms with React Hook Form + Zod** — client/server validation, file uploads, error feedback.
+- **Internationalization with next-intl** — locale routing, translations, date/currency formatting.
+- **Django API Integration** — JWT auth in browser/server, cache, and stale-while-revalidate.
+- **Design System with Tailwind + shadcn/ui** — themes, base components, accessibility, dark mode.
 
-- **Autenticação com NextAuth.js** — providers sociais, sessão, proteção de rotas, middleware
-- **SSR / SSG / ISR** — quando usar cada estratégia, caching, revalidação e fallback
-- **App Router com Server Components** — layouts aninhados, streaming, suspense boundaries
-- **Formulários com React Hook Form + Zod** — validação client/server, upload de arquivos, feedback de erro
-- **Internacionalização com next-intl** — roteamento por locale, traduções, formatação de datas e moedas
-- **Integração com API Django** — autenticação JWT no browser e no servidor, cache e stale-while-revalidate
-- **Design System com Tailwind + shadcn/ui** — temas, componentes base, acessibilidade, dark mode
+### General Python
+- **CLI with Typer** — subcommands, options, validation, `.env` config, PyPI distribution.
+- **Robust Scraping** — Playwright, proxy rotation, rate limit detection, result persistence.
+- **ETL with Pandas + SQLAlchemy** — ingestion, transformation, incremental load, and schema migration.
+- **Reusable API Client** — retry with backoff, auth, cache, Pydantic typing.
+- **Automation with Prefect / Airflow** — DAGs, dependencies, observability, cloud execution.
 
-### Python Geral
+### Data Science & Machine Learning
+- **Data Pipeline with Pandas & Polars** — cleaning, feature engineering, dataset versioning.
+- **Model Training & Tracking** — MLflow, experiments, artifact registry, run comparisons.
+- **Serving Models with FastAPI** — inference endpoints, input validation, latency, and batching.
+- **Standardized EDA** — reproducible exploratory analysis with structured notebooks and automated reports.
+- **Lightweight Feature Store** — storage, versioning, and retrieval of features for training and inference.
 
-- **CLI com Typer** — subcomandos, opções, validação, configuração via `.env`, distribuição com PyPI
-- **Scraping Robusto** — Playwright, rotação de proxies, detecção de rate limit, persistência de resultados
-- **ETL com Pandas + SQLAlchemy** — ingestão, transformação, carga incremental e schema migration
-- **API Client Reutilizável** — retry com backoff, autenticação, cache, tipagem com Pydantic
-- **Automação com Prefect / Airflow** — DAGs, dependências, observabilidade, execução em nuvem
-
-### Ciência de Dados & Machine Learning
-
-- **Pipeline de Dados com Pandas & Polars** — limpeza, feature engineering, versionamento de datasets
-- **Treinamento e Rastreamento de Modelos** — MLflow, experimentos, registro de artefatos, comparação de runs
-- **Servir Modelos com FastAPI** — endpoints de inferência, validação de input, latência e batching
-- **EDA Padronizado** — análise exploratória reproduzível com notebooks estruturados e relatórios automatizados
-- **Feature Store Leve** — armazenamento, versionamento e recuperação de features para treinamento e inferência
-
-### Agentes & Inteligência Artificial
-
-- **Agente com Claude API** — tool use, prompt caching, memory, conversação multi-turno
-- **RAG (Retrieval-Augmented Generation)** — chunking, embedding, vector store (pgvector / Chroma), reranking
-- **Agente com Memória Persistente** — short-term, long-term, episódica; armazenamento em banco e recuperação semântica
-- **Multi-Agente com Claude Code SDK** — orquestração, sub-agentes especializados, handoff e supervisão
-- **Avaliação de LLMs (LLM-as-judge)** — métricas, datasets de teste, CI para qualidade de respostas
-- **Fine-tuning e RLHF Leve** — coleta de preferências, LoRA, avaliação antes/depois
-- **MCP Server Customizado** — criação de ferramentas MCP para integrar sistemas internos ao Claude Code
-
-### Infraestrutura & DevOps
-
-- **Django em Produção** — Docker, Gunicorn, Nginx, PostgreSQL, Redis, CI/CD com GitHub Actions
-- **Deploy Serverless** — Railway, Render, Fly.io — configuração, secrets, bancos gerenciados, rollback
-- **Observabilidade** — Sentry para erros, Prometheus + Grafana para métricas, logging estruturado
-- **Banco de Dados** — migrations seguras em produção, backups automatizados, read replicas, connection pooling
+### Agents & AI
+- **Agent with Claude API** — tool use, prompt caching, memory, multi-turn conversation.
+- **RAG (Retrieval-Augmented Generation)** — chunking, embedding, vector store (pgvector / Chroma), reranking.
+- **Persistent Memory Agent** — short-term, long-term, episodic; DB storage and semantic retrieval.
+- **Multi-Agent with Claude Code SDK** — orchestration, specialized sub-agents, handoff, and supervision.
+- **LLM Evaluation (LLM-as-judge)** — metrics, test datasets, CI for response quality.
+- **Fine-tuning & Lightweight RLHF** — preference collection, LoRA, before/after evaluation.
+- **Custom MCP Server** — creating MCP tools to integrate internal systems with Claude Code.
 
 ---
 
-## Como Usar
+## How to Use
 
-### Com um agente de IA
-
+### With an AI Agent
 ```
-Leia o arquivo [spec].md e implemente o sistema descrito no meu projeto.
-Siga as decisões arquiteturais da seção 1 antes de começar.
+Read the [spec].md file and implement the described system in my project.
+Follow the architectural decisions in section 1 before starting.
 ```
 
-### Como referência técnica
-
-Abra a spec antes de iniciar uma feature. Use o **Checklist de Implementação** ao final de cada documento para garantir que nada foi esquecido.
-
-### Contribuindo
-
-1. Crie um arquivo com o padrão `YYYY-MM-DD-nome-da-feature-tecnologia-spec.md`
-2. Siga a estrutura: Visão Geral → Decisões Arquiteturais → Implementação passo a passo → Checklist
-3. A spec deve ser genérica o suficiente para funcionar em qualquer projeto da stack
+### As a Technical Reference
+Open the spec before starting a feature. Use the **Implementation Checklist** at the end of each document to ensure nothing is missed.
 
 ---
 
-## Estrutura de uma Spec
+## Contributing
+
+1. Create a file following the pattern `YYYY-MM-DD-feature-name-technology-spec.md`.
+2. Follow the structure: Overview → Architectural Decisions → Step-by-step Implementation → Checklist.
+3. The spec must be generic enough to work on any project within the stack.
+
+---
+
+## Spec Structure
 
 ```
-# Nome da Feature — Spec de Implementação
+# Feature Name — Implementation Spec
 
-## 1. Visão Geral
-## 2. Decisões Arquiteturais       ← escolhas com trade-offs explicados
-## 3. Configuração / Settings
-## 4. Modelos / Schema
-## 5. Lógica de Negócio
+## 1. Overview
+## 2. Architectural Decisions       ← choices with trade-offs explained
+## 3. Configuration / Settings
+## 4. Models / Schema
+## 5. Business Logic
 ## 6. Endpoints / Views / API
-## 7. Testes
-## 8. Checklist de Implementação   ← itens verificáveis ao final
+## 7. Testing
+## 8. Implementation Checklist      ← verifiable items at the end
 ```
 
 ---
 
-## Licença
+## Tech Stack Reference
 
-MIT — use, adapte e distribua livremente.
+| Layer | Technology |
+|-------|-----------|
+| Backend | Python 3.12, FastAPI, Pydantic v2, asyncpg, redis-py |
+| Frontend | Next.js 15, React 19, TypeScript |
+| Database | PostgreSQL 16 + pgvector extension |
+| Cache | Redis 7 |
+| Local LLM | Ollama |
+| Cloud LLMs | OpenAI, Anthropic, Google Gemini |
+| Containers | Docker, Docker Compose |
+
+---
+
+## License
+
+MIT — use, adapt, and distribute freely.
