@@ -30,6 +30,14 @@ Accelerate project development by eliminating time spent on research and repetit
 |------|---------------|
 | [spec-database-memory-rag.md](spec-database-memory-rag.md) | Hybrid memory with Redis (fast, ephemeral) + PostgreSQL (durable). pgvector for semantic RAG. Includes schema, chunking, incremental embeddings, and graceful degradation. |
 
+### Multi-Level RAG Architecture
+
+| Spec | What it covers |
+|------|---------------|
+| [spec__rag_multinivel_arquitetura.md](spec__rag_multinivel_arquitetura.md) | 5-stage pipeline for document ingestion: Decomposition, Enrichment, Distribution, Vector Indexing, and Orchestrated RAG. |
+| [spec__rag_data_structure.md](spec__rag_data_structure.md) | Schema for structured JSON documents, serverless indices (topics/relations), and pgvector database schema for semantic search. |
+| [spec__rag_ai_engine.md](spec__rag_ai_engine.md) | LLM-based enrichment (summaries, entities), conversational orchestration (query re-writing, evidence extraction), and hard grounding validation. |
+
 ### LLM & Configuration
 
 | Spec | What it covers |
@@ -60,10 +68,11 @@ For a new AI application from scratch:
 1. [spec-multiagent-pipeline.md](spec-multiagent-pipeline.md) — understand the agent pattern first
 2. [spec-multi-provider-llm.md](spec-multi-provider-llm.md) — wire the LLM layer
 3. [spec-database-memory-rag.md](spec-database-memory-rag.md) — add memory and RAG
-4. [spec-declarative-behavior-config.md](spec-declarative-behavior-config.md) — externalize behavior
-5. [spec-fullstack-docker-network.md](spec-fullstack-docker-network.md) — containerize
-6. [spec-runtime-config-api.md](spec-runtime-config-api.md) — add operator controls
-7. [spec-agent-observability.md](spec-agent-observability.md) — add tracing
+4. [spec__rag_multinivel_arquitetura.md](spec__rag_multinivel_arquitetura.md) — implement advanced document intelligence
+5. [spec-declarative-behavior-config.md](spec-declarative-behavior-config.md) — externalize behavior
+6. [spec-fullstack-docker-network.md](spec-fullstack-docker-network.md) — containerize
+7. [spec-runtime-config-api.md](spec-runtime-config-api.md) — add operator controls
+8. [spec-agent-observability.md](spec-agent-observability.md) — add tracing
 
 ---
 
