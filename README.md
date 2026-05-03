@@ -15,14 +15,6 @@ Acelerar o desenvolvimento de projetos eliminando o tempo gasto em pesquisa e to
 
 ---
 
-## Specs Disponíveis
-
-| Arquivo | Tecnologia | Descrição |
-|---------|-----------|-----------|
-| [2026-05-03-internacionalizacao-django-spec.md](2026-05-03-internacionalizacao-django-spec.md) | Django | Suporte a múltiplos idiomas: settings, middleware, templates, tradução e seletor de idioma |
-| [2026-05-03-carrinho-pagamentos-django-spec.md](2026-05-03-carrinho-pagamentos-django-spec.md) | Django | Carrinho de compras, checkout, Pix/transferência, webhooks e e-mails transacionais |
-
----
 
 ## Specs Planejadas
 
