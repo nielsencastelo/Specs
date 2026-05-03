@@ -135,31 +135,6 @@ Open the spec before starting a feature. Use the **Implementation Checklist** at
 
 ---
 
-## Contributing
-
-1. Create a file following the pattern `YYYY-MM-DD-feature-name-technology-spec.md`.
-2. Follow the structure: Overview → Architectural Decisions → Step-by-step Implementation → Checklist.
-3. The spec must be generic enough to work on any project within the stack.
-
----
-
-## Spec Structure
-
-```
-# Feature Name — Implementation Spec
-
-## 1. Overview
-## 2. Architectural Decisions       ← choices with trade-offs explained
-## 3. Configuration / Settings
-## 4. Models / Schema
-## 5. Business Logic
-## 6. Endpoints / Views / API
-## 7. Testing
-## 8. Implementation Checklist      ← verifiable items at the end
-```
-
----
-
 ## Tech Stack Reference
 
 | Layer | Technology |
